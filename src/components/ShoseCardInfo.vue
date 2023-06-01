@@ -1,14 +1,14 @@
 <template>
   <div>
-    <div class="container">
+    <div class="container pb-[20px]">
       <div v-if="carts">
         <div class="blokc flex items-center">
           <img class="w-[600px]" :src="carts.image" alt="" />
           <div class="text ml-[30px] text-[25px] w-[400px]">
-            <p>{{ carts.brand }}</p>
-            <p>{{ carts.name }}</p>
-            <p>${{ carts.price }}</p>
-            <p>Өлшемі</p>
+            <p class="pt-[15px]">{{ carts.brand }}</p>
+            <p class="pt-[15px]">{{ carts.name }}</p>
+            <p class="pt-[15px]">${{ carts.price }}</p>
+            <p class="pt-[15px]">Өлшемі</p>
 
             <button
               v-for="size in carts.size"
@@ -30,14 +30,28 @@
             <button
               type="button"
               @click="addToLike"
-              class="mt-[30px] text-[20px] text-white bg-[#CCC2A5] hover:bg-[#CCC2A5]focus:ring-4 focus:ring-blue-300 font-medium w-full px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+              class="mt-[10px] text-[20px] text-white bg-[#CCC2A5] hover:bg-[#CCC2A5]focus:ring-4 focus:ring-blue-300 font-medium w-full px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
             >
               Таңдаулыларға қосу
             </button>
-            <p>Ақпарат</p>
+            <p class="pt-[17px]">Ақпарат</p>
             <p class="text-[20px] text-[#9D9D9D]">{{ carts.info }}</p>
-            <p>Жеткізу</p>
+            <p class="pt-[17px]">Жеткізу</p>
             <p class="text-[20px] text-[#9D9D9D]">{{ carts.delivery }}</p>
+          </div>
+        </div>
+        <p class="text-[25px] font-bold mb-[15px]">Пікірлер орны</p>
+        <div class="flex gap-[50px]">
+          <div
+            v-for="comment in carts.comments"
+            class="border-[1px] p-[20px] border-[#583318] w-[400px] h-full"
+          >
+            <p><span class="font-bold">Аты: </span> {{ comment.name }}</p>
+            <p>
+              <span class="font-bold">Күні: </span>
+              {{ formatCommentDate(comment.date) }}
+            </p>
+            <p><span class="font-bold">Пікір: </span> {{ comment.comment }}</p>
           </div>
         </div>
       </div>
@@ -71,6 +85,10 @@ export default {
     };
   },
   methods: {
+    formatCommentDate(date) {
+      // Implement the logic to format the comment date as per your requirement
+      return new Date(date.seconds * 1000).toLocaleString();
+    },
     sizeIt(item) {
       this.sizeShose = item;
       this.selectedSize = item;

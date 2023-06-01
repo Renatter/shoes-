@@ -7,8 +7,12 @@
         <router-link to="/Catalog">
           <li class="m1 pl-[25px]">Каталог</li>
         </router-link>
-        <li class="m1 pl-[25px]">Жаңа тауарлар</li>
-        <li class="m1 pl-[25px]">Акция</li>
+        <router-link to="/NewProduct">
+          <li class="m1 pl-[25px]">Жаңа тауарлар</li>
+        </router-link>
+        <router-link to="/Discount">
+          <li class="m1 pl-[25px]">Акция</li></router-link
+        >
       </ul>
       <div v-if="isAuthenticated === false">
         <router-link to="/Login">

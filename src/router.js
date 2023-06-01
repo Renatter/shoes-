@@ -11,6 +11,8 @@ import Reg from "./components/Reg.vue"
 import Login from "./components/Login.vue"
 import Basket from "./view/Basket.vue"
 import Like from "./view/Like.vue"
+import NewProduct from "./view/NewProduct.vue"
+import Discount from "./view/Discount.vue"
 const router = createRouter({
 
     history: createWebHistory(),
@@ -25,6 +27,11 @@ const router = createRouter({
             component: Catalog,
         },
         {
+            path: '/NewProduct',
+            name: 'NewProduct',
+            component: NewProduct,
+        },
+        {
             path: '/Reg',
             name: 'Reg',
             component: Reg,
@@ -33,6 +40,11 @@ const router = createRouter({
             path: '/Basket',
             name: 'Basket',
             component: Basket,
+        },
+        {
+            path: '/Discount',
+            name: 'Discount',
+            component: Discount,
         },
         {
             path: '/Like',
