@@ -1,26 +1,78 @@
 <template>
   <div class="bg">
     <div class="container">
+      <img src="../assets/logo1.png" alt="" />
       <ul>
         <router-link to="/"> <li>Басты бет</li></router-link>
         <router-link to="/Catalog">
-          <li class="m1">Каталог</li>
+          <li class="m1 pl-[25px]">Каталог</li>
         </router-link>
-        <li class="m1">Жаңа тауарлар</li>
-        <li class="m1">Акция</li>
+        <li class="m1 pl-[25px]">Жаңа тауарлар</li>
+        <li class="m1 pl-[25px]">Акция</li>
       </ul>
-      <img src="../assets/logo1.png" alt="" />
-      <ul>
-        <li><img class="logoImg" src="../assets/userLogo.png" alt="" /></li>
-        <li><img class="logoImg" src="../assets/favLogo.png" alt="" /></li>
-        <li><img class="logoImg" src="../assets/Basket.png" alt="" /></li>
+      <div v-if="isAuthenticated === false">
+        <router-link to="/Login">
+          <button
+            type="button"
+            class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+          >
+            Кіру
+          </button>
+        </router-link>
+        <router-link to="/Reg">
+          <button
+            type="button"
+            class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+          >
+            Тіркеу
+          </button>
+        </router-link>
+      </div>
+      <ul v-else class="items-center">
+        <router-link to="/Like">
+          <li><img class="logoImg" src="../assets/favLogo.png" alt="" /></li>
+        </router-link>
+        <router-link to="/Basket">
+          <li><img class="logoImg" src="../assets/Basket.png" alt="" /></li>
+        </router-link>
+        <button
+          @click="logout"
+          type="button"
+          class="ml-[25px] py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+        >
+          Шығу
+        </button>
       </ul>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+import { auth, db } from "../firebase/firebase";
+import { doc, getDoc, onSnapshot } from "firebase/firestore";
+export default {
+  data() {
+    return {
+      isAuthenticated: false,
+    };
+  },
+  methods: {
+    logout() {
+      auth.signOut();
+      this.$router.push("/");
+      this.isAuthenticated = false;
+    },
+  },
+  created() {
+    auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        this.isAuthenticated = true;
+        const docRef = doc(db, "users", user.uid);
+        this.$router.push("/");
+      }
+    });
+  },
+};
 </script>
 
 <style lang="scss" scoped>
