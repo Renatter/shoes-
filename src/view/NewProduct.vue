@@ -6,6 +6,7 @@
     </div>
   </div>
 </template>
+// Импорт компонента и Firebase модулей
 
 <script>
 import ShoseCard from "../components/ShoseCard.vue";
@@ -19,18 +20,22 @@ import {
   doc,
   getDoc,
 } from "firebase/firestore";
+
 export default {
   components: {
     ShoseCard,
   },
   data() {
     return {
-      newsProduct: [],
-      catalog: "newProdcut",
+      newsProduct: [], // Массив для хранения новых товаров
+      catalog: "newProdcut", // Имя каталога новых товаров
     };
   },
   async mounted() {
+    // Получение списка документов из коллекции "newProdcut"
     const querySnapshot = await getDocs(collection(db, "newProdcut"));
+
+    // Преобразование документов в объекты и сохранение в массив newsProduct
     this.newsProduct = querySnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
@@ -38,5 +43,6 @@ export default {
   },
 };
 </script>
+// Стили компонента
 
 <style lang="scss" scoped></style>

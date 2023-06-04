@@ -2,6 +2,7 @@
   <div>
     <div class="container pb-[20px]">
       <div v-if="carts">
+        <!-- Блок с информацией о товаре -->
         <div class="blokc flex items-center">
           <img class="w-[600px]" :src="carts.image" alt="" />
           <div class="text ml-[30px] text-[25px] w-[400px]">
@@ -10,6 +11,7 @@
             <p class="pt-[15px]">${{ carts.price }}</p>
             <p class="pt-[15px]">Өлшемі</p>
 
+            <!-- Кнопки выбора размера -->
             <button
               v-for="size in carts.size"
               :key="size"
@@ -20,6 +22,7 @@
               {{ size }}
             </button>
 
+            <!-- Кнопка "Себетке қосу" (Добавить в корзину) -->
             <button
               type="button"
               @click="addToCart"
@@ -27,6 +30,8 @@
             >
               Себетке қосу
             </button>
+
+            <!-- Кнопка "Таңдаулыларға қосу" (Добавить в список таңдаулылар) -->
             <button
               type="button"
               @click="addToLike"
@@ -34,12 +39,15 @@
             >
               Таңдаулыларға қосу
             </button>
+
             <p class="pt-[17px]">Ақпарат</p>
             <p class="text-[20px] text-[#9D9D9D]">{{ carts.info }}</p>
             <p class="pt-[17px]">Жеткізу</p>
             <p class="text-[20px] text-[#9D9D9D]">{{ carts.delivery }}</p>
           </div>
         </div>
+
+        <!-- Секция с комментариями -->
         <p class="text-[25px] font-bold mb-[15px]">Пікірлер орны</p>
         <div class="flex gap-[50px]">
           <div
@@ -85,8 +93,9 @@ export default {
     };
   },
   methods: {
+    // Форматирование даты комментария
     formatCommentDate(date) {
-      // Implement the logic to format the comment date as per your requirement
+      // Реализуйте логику форматирования даты комментария в соответствии с вашими требованиями
       return new Date(date.seconds * 1000).toLocaleString();
     },
     sizeIt(item) {
@@ -94,6 +103,7 @@ export default {
       this.selectedSize = item;
     },
 
+    // Добавление товара в корзину
     async addToCart() {
       const docRef = doc(db, "cart", `${this.currentUser.uid}`);
       const newItem = {
@@ -105,7 +115,7 @@ export default {
         size: this.sizeShose,
       };
 
-      // Check if the new item already exists in the cart
+      // Проверка, существует ли новый товар уже в корзине
       const itemExists = (this.cart || []).some(
         (item) => item.name === newItem.name
       );
@@ -115,14 +125,16 @@ export default {
         return;
       }
 
-      // Add the new item to the existing cart array
+      // Добавление нового товара в существующий массив корзины
       const updatedCart = [...(this.cart || []), newItem];
 
-      // Update the user's cart with the updated cart array
+      // Обновление корзины пользователя с обновленным массивом
       await setDoc(docRef, { cart: updatedCart }, { merge: true });
 
-      console.log("Item added to cart:", newItem);
+      console.log("Товар добавлен в корзину:", newItem);
     },
+
+    // Добавление товара в список таңдаулылар (like list)
     async addToLike() {
       const docRef = doc(db, "like", `${this.currentUser.uid}`);
       const newItem = {
@@ -134,7 +146,7 @@ export default {
         size: this.sizeShose,
       };
 
-      // Check if the new item already exists in the like list
+      // Проверка, существует ли новый товар уже в списке таңдаулылар
       const itemExists = (this.like || []).some(
         (item) => item.name === newItem.name
       );
@@ -144,13 +156,13 @@ export default {
         return;
       }
 
-      // Add the new item to the existing like array
+      // Добавление нового товара в существующий массив списка таңдаулылар
       const updatedLike = [...(this.like || []), newItem];
 
-      // Update the user's like list with the updated like array
+      // Обновление списка таңдаулылар пользователя с обновленным массивом
       await setDoc(docRef, { like: updatedLike }, { merge: true });
 
-      console.log("Item added to like list:", newItem);
+      console.log("Товар добавлен в список таңдаулылар:", newItem);
     },
   },
   async created() {
@@ -163,9 +175,10 @@ export default {
     querySnapshot.forEach((doc) => {
       this.carts = doc.data();
 
-      // doc.data() is never undefined for query doc snapshots
+      // doc.data() никогда не является undefined для полученных документов запроса
       console.log(doc.id, " => ", doc.data());
     });
+
     auth.onAuthStateChanged(async (user) => {
       if (user) {
         this.currentUser = user;
@@ -175,14 +188,15 @@ export default {
         if (userDoc.exists()) {
           this.cart = userDoc.data().cart;
         } else {
-          console.log("No such document!");
+          console.log("Документ не существует!");
         }
+
         const likeDocRef = doc(db, "like", user.uid);
         const likeDoc = await getDoc(likeDocRef);
         if (likeDoc.exists()) {
           this.like = likeDoc.data().like;
         } else {
-          console.log("No such document!");
+          console.log("Документ не существует!");
         }
       }
     });

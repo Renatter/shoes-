@@ -4,6 +4,7 @@
     <div class="flex justify-between">
       <div class="TABLE w-[950px]">
         <hr />
+        <!-- Заголовок таблицы -->
         <div class="talbeText flex justify-between text-[40px] py-[15px]">
           <p>Товар</p>
           <div class="flex">
@@ -13,6 +14,7 @@
           </div>
         </div>
         <hr />
+        <!-- Элементы таблицы -->
         <div
           v-for="item in items"
           :key="item.name"
@@ -43,6 +45,7 @@
         <hr />
       </div>
 
+      <!-- Общая стоимость -->
       <div
         class="PRICE border-[1px] w-[250px] h-[200px] bg-[#E9D9CC] rounded-[15px] p-[15px]"
       >
@@ -66,26 +69,29 @@ import { doc, updateDoc, arrayRemove, onSnapshot } from "firebase/firestore";
 export default {
   data() {
     return {
-      currentUser: null,
-      items: null,
-      totalSum: 0,
+      currentUser: null, // Текущий пользователь
+      items: null, // Элементы товаров
+      totalSum: 0, // Общая сумма
     };
   },
   methods: {
+    // Обновление общей суммы
     updateTotalSum() {
       if (this.items) {
         this.totalSum = this.items.reduce((sum, item) => sum + item.price, 0);
       }
     },
+    // Удаление элемента
     async deleteItem(item) {
       const docRef = doc(db, "cart", this.currentUser.uid);
       await updateDoc(docRef, {
         cart: arrayRemove(item),
       });
-      this.updateTotalSum(); // Call the method after deleting the item
+      this.updateTotalSum(); // Вызов метода после удаления элемента
     },
   },
   async created() {
+    // Проверка аутентификации пользователя
     auth.onAuthStateChanged(async (user) => {
       if (user) {
         this.currentUser = user;
@@ -93,19 +99,19 @@ export default {
         const unsubscribe = onSnapshot(docRef, (docSnap) => {
           if (docSnap.exists()) {
             this.items = docSnap.data().cart;
-            this.updateTotalSum(); // Call the method after fetching the items
+            this.updateTotalSum(); // Вызов метода после получения элементов
           } else {
             console.log("No such document!");
           }
         });
 
-        // Add unsubscribe function to component instance
+        // Добавление функции отписки от снапшота в экземпляр компонента
         this.unsubscribe = unsubscribe;
       }
     });
   },
   beforeUnmount() {
-    // Unsubscribe from the snapshot listener when the component is unmounted
+    // Отписка от снапшота при удалении компонента
     if (this.unsubscribe) {
       this.unsubscribe();
     }

@@ -5,6 +5,7 @@
 
       <div class="flex gap-12">
         <div class="w-[270px]">
+          <!-- Секция категорий -->
           <p class="font-bold text-[25px]">Түрі</p>
           <div class="flex items-center mb-4">
             <input
@@ -68,6 +69,10 @@
               >Балетки</label
             >
           </div>
+          <!-- Другие варианты категорий -->
+          <!-- ... -->
+
+          <!-- Секция цен -->
           <p class="py-[10px] font-bold text-[25px]">Бағасы</p>
           <div class="mb-2">
             <button
@@ -87,6 +92,7 @@
           </div>
         </div>
         <div>
+          <!-- Компонент ShoeCard -->
           <ShoseCard :shoes="shoes" :catalog="tab" />
         </div>
       </div>
@@ -105,26 +111,31 @@ export default {
   },
   data() {
     return {
-      tab: "shoes",
-      shoes: [],
+      tab: "shoes", // Текущая выбранная категория
+      shoes: [], // Массив для хранения данных о обуви
     };
   },
   watch: {
+    // Отслеживание изменений в выбранной категории
     tab: {
       immediate: true,
       handler(newTab) {
-        this.fetchShoesData(newTab);
+        this.fetchShoesData(newTab); // Получение данных об обуви на основе выбранной категории
       },
     },
   },
   methods: {
+    // Сортировка массива обуви по возрастанию цены
     sortAscending() {
       this.shoes.sort((a, b) => a.price - b.price);
     },
 
+    // Сортировка массива обуви по убыванию цены
     sortDescending() {
       this.shoes.sort((a, b) => b.price - a.price);
     },
+
+    // Получение данных об обуви из Firestore на основе выбранной категории
     async fetchShoesData(tab) {
       const querySnapshot = await getDocs(collection(db, tab));
       this.shoes = querySnapshot.docs.map((doc) => ({
