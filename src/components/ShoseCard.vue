@@ -29,7 +29,3 @@ export default {
   // Остальная логика компонента может находиться здесь
 };
 </script>
-
-<style lang="scss" scoped></style>
-
-<style lang="scss" scoped></style>
