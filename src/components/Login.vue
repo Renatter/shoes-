@@ -1,13 +1,13 @@
 <template>
   <div class="h-screen flex items-center justify-center">
     <div class="">
-      <p class="text-xl font-bold mb-2">EMAIL</p>
+      <p class="text-xl font-bold mb-2">Электрондық пошта</p>
       <input
         v-model="email"
         type="text"
         class="border border-gray-300 rounded px-4 py-2 mb-2 w-[400px]"
       />
-      <p class="text-xl font-bold mb-2">Pass</p>
+      <p class="text-xl font-bold mb-2">Құпия сөз</p>
       <input
         v-model="pass"
         type="text"
