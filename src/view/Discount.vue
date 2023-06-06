@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container">
-      <h1 class="text-[50px] font-bold">Жаңа тауарлар</h1>
+      <h1 class="text-[50px] font-bold">Акция</h1>
       <ShoseCard :shoes="newsProduct" :catalog="catalog" />
     </div>
   </div>

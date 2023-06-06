@@ -22,7 +22,7 @@
         </div>
         <img
           class="w-[500px]"
-          src="https://purepng.com/public/uploads/large/purepng.com-women-shoewomen-shoesfootdesignfoot-wearwomenladiescasualleather-1421526427925aw6u9.png"
+          src="../assets/photo_2023-06-05_17-27-01.jpg"
           alt=""
         />
       </div>
