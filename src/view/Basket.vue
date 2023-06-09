@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    {{ currentUser.uid }}
     <h1 class="text-center font-bold text-[55px]">Себет</h1>
     <div v-if="basket === true" class="flex justify-between">
       <div class="TABLE w-[950px]">
@@ -14,6 +15,7 @@
           </div>
         </div>
         <hr />
+
         <!-- Элементы таблицы -->
         <div
           v-for="item in items"
@@ -205,6 +207,7 @@
                 </div>
               </div>
               <button
+                @click="delteStock()"
                 type="button"
                 class="w-full text-white bg-[#583318] hover:bg-[#583318] focus:ring-4 focus:ring-blue-300 font-medium text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
               >
@@ -280,6 +283,7 @@
                 </div>
               </div>
               <button
+                @click="delteStock"
                 type="button"
                 class="w-full mt-[25px] text-white bg-[#583318] hover:bg-[#583318] focus:ring-4 focus:ring-blue-300 font-medium text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
               >
@@ -295,7 +299,17 @@
 
 <script>
 import { db, auth } from "../firebase/firebase";
-import { doc, updateDoc, arrayRemove, onSnapshot } from "firebase/firestore";
+import {
+  doc,
+  updateDoc,
+  arrayRemove,
+  onSnapshot,
+  query,
+  where,
+  collection,
+  getDocs,
+  deleteDoc,
+} from "firebase/firestore";
 
 export default {
   data() {
@@ -308,6 +322,26 @@ export default {
     };
   },
   methods: {
+    async delteStock() {
+      this.items.forEach(async (item) => {
+        const q = query(
+          collection(db, item.category),
+          where("name", "==", item.name)
+        );
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+          // doc.data() is never undefined for query doc snapshots
+          console.log(doc.id, " => ", doc.data());
+          const docRef = doc.ref; // Get the DocumentReference
+          updateDoc(docRef, {
+            ...doc.data(),
+            stock: doc.data().stock - 1,
+          });
+        });
+      });
+      await deleteDoc(doc(db, "cart", this.currentUser.uid));
+      this.$router.push("/Catalog");
+    },
     // Обновление общей суммы
     updateTotalSum() {
       if (this.items) {

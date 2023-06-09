@@ -13,6 +13,9 @@
         <router-link to="/Discount">
           <li class="m1 pl-[25px]">Акция</li></router-link
         >
+        <router-link to="/Constructor">
+          <li class="m1 pl-[25px]">Конструктор</li></router-link
+        >
       </ul>
       <div v-if="isAuthenticated === false">
         <router-link to="/Login">
@@ -35,20 +38,12 @@
       <ul v-else class="items-center">
         <router-link to="/Like">
           <li class="relative">
-            <span
-              class="itemCount absolute left-[35px] bottom-[14px] text-red-500"
-              >{{ itemsLike }}</span
-            >
             <img class="logoImg" src="../assets/favLogo.png" alt="" />
           </li>
         </router-link>
 
         <router-link to="/Basket">
           <li class="relative">
-            <span
-              class="itemCount absolute right-0 bottom-[14px] text-red-500"
-              >{{ itemsLength }}</span
-            >
             <img class="logoImg" src="../assets/Basket.png" alt="" />
           </li>
         </router-link>
@@ -88,30 +83,6 @@ export default {
         this.isAuthenticated = true;
         const docRef = doc(db, "users", user.uid);
         this.$router.push("/");
-
-        const likeRef = doc(db, "like", user.uid);
-        onSnapshot(likeRef, (docSnap) => {
-          if (docSnap.exists()) {
-            console.log("Document data:", docSnap.data());
-
-            this.itemsLike = docSnap.data().like.length;
-            console.log(this.itemsLike);
-          } else {
-            console.log("No such document!");
-          }
-        });
-
-        const cartRef = doc(db, "cart", user.uid);
-        onSnapshot(cartRef, (docSnap) => {
-          if (docSnap.exists()) {
-            console.log("Document data:", docSnap.data());
-
-            this.itemsLength = docSnap.data().cart.length;
-            console.log(this.itemsLength);
-          } else {
-            console.log("No such document!");
-          }
-        });
       }
     });
   },

@@ -8,6 +8,7 @@
           <div class="text ml-[30px] text-[25px] w-[400px]">
             <p class="pt-[15px]">{{ carts.brand }}</p>
             <p class="pt-[15px]">{{ carts.name }}</p>
+            <p class="pt-[5px]">В наличи {{ carts.stock }}</p>
             <p class="pt-[15px]">${{ carts.price }}</p>
             <p class="pt-[15px]">Өлшемі</p>
 
@@ -24,12 +25,19 @@
 
             <!-- Кнопка "Себетке қосу" (Добавить в корзину) -->
             <button
+              v-if="carts.stock >= 1"
               type="button"
               @click="addToCart"
               class="mt-[30px] text-[20px] text-white bg-[#CCC2A5] hover:bg-[#CCC2A5]focus:ring-4 focus:ring-blue-300 font-medium w-full px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
             >
               Себетке қосу
             </button>
+            <p
+              v-else
+              class="mt-[30px] text-[20px] text-white bg-red-500 py-2.5 px-5 mb-2 font-medium w-full text-center"
+            >
+              Нет в наличии
+            </p>
 
             <!-- Кнопка "Таңдаулыларға қосу" (Добавить в список таңдаулылар) -->
             <button
