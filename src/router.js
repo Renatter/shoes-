@@ -17,6 +17,10 @@ import Constructor from "./view/Constructor.vue"
 import ConstructorCard from "./Constructor/ConstructorCard.vue"
 import ConstCard2 from "./Constructor/ConstCard2.vue"
 import ConstCard3 from "./Constructor/ConstCard3.vue"
+import ConstCard4 from "./Constructor/ConstCard4.vue"
+import ConstCard5 from "./Constructor/ConstCard5.vue"
+import ConstCard6 from "./Constructor/ConstCard6.vue"
+import ConstCard7 from "./Constructor/ConstCard7.vue"
 const router = createRouter({
 
     history: createWebHistory(),
@@ -24,6 +28,11 @@ const router = createRouter({
             path: '/',
             name: 'Home',
             component: Home,
+        },
+        {
+            path: '/ConstCard4',
+            name: 'ConstCard4',
+            component: ConstCard4,
         },
         {
             path: '/Catalog',
@@ -49,6 +58,21 @@ const router = createRouter({
             path: '/ConstCard3',
             name: 'ConstCard3',
             component: ConstCard3,
+        },
+        {
+            path: '/ConstCard5',
+            name: 'ConstCard5',
+            component: ConstCard5,
+        },
+        {
+            path: '/ConstCard6',
+            name: 'ConstCard6',
+            component: ConstCard6,
+        },
+        {
+            path: '/ConstCard7',
+            name: 'ConstCard7',
+            component: ConstCard7,
         },
         {
             path: '/Reg',

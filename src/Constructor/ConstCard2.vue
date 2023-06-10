@@ -169,22 +169,33 @@
       <div>
         <div class="text-[35px]">
           <input type="color" id="head" name="head" v-model="color" />
-          <label for="head">Front</label> <br />
+          <label for="head">Сыртқы түрі</label> <br />
           <input type="color" id="head1" name="head1" v-model="under" />
-          <label for="head1">Under</label> <br />
+          <label for="head1">Өкше</label> <br />
 
           <input type="color" id="head1" name="head1" v-model="pad" />
-          <label for="head1">Padding</label> <br />
+          <label for="head1">Табан</label> <br />
           <input type="color" id="head1" name="head1" v-model="inside" />
-          <label for="head1">Inside</label>
+          <label for="head1">Ішкі көрініс</label>
         </div>
-        <button
-          class="mt-[15px] bg-[#CCC2A5] p-[15px] w-[200px] rounded-[5px] text-[#583318] font-bold"
-          id="downloadButton"
-          @click="downloadSVG"
-        >
-          SVG жүктеу
-        </button>
+        <div class="mt-[15px]">
+          <button
+            v-if="spend == false"
+            class="mt-[15px] bg-[#CCC2A5] p-[15px] w-[200px] rounded-[5px] text-[#583318] font-bold"
+            id="downloadButton"
+            @click="downloadSVG"
+          >
+            SVG жүктеу
+          </button>
+          <a
+            v-if="spend === true"
+            href="https://api.whatsapp.com/send/?phone=87083727322"
+            class="mt-[5px] bg-[#0DC143] p-[15px] w-[250px] rounded-[5px] text-white font-bold"
+            id="downloadButton"
+          >
+            Whatsapp арқылы жіберу
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -199,10 +210,12 @@ export default {
       bg: "#fff",
       pad: "#d5c7ab",
       inside: "#713232",
+      spend: false,
     };
   },
   methods: {
     downloadSVG() {
+      this.spend = true;
       const svgElement = this.$refs.qrcode;
       const svgData = new XMLSerializer().serializeToString(svgElement);
       const blob = new Blob([svgData], { type: "image/svg+xml" });
